@@ -64,15 +64,18 @@ class Event:
         # I<N>: ENTREGA <N> ITEMS ALEATORIOS
         if code[0] == 'I':
             rew = [random.choice(ITEMS) for i in range(int(code[1]))]
-            player.items += rew[:min(len(rew),_MBAG - len(player.items))]
+            player.items += rew[:min(len(rew), META["bag"] - len(player.items))]
         # N: NO PASA NADA
         if code[0] == 'N': pass
         
         return end
 
-def loadData(nf):
+def loadData(path):
+    global _PATH, META
+    _PATH = path
     EVS_AUX = dict()
-    with open(nf) as f:
+    
+    with open(path + 'data') as f:
         for l in f:
             if len(l) == 1: continue
             dat = l.strip().split(';')
@@ -94,7 +97,12 @@ def loadData(nf):
             if dat[0] == "meta":
                 for z in ZONES:
                     if z.name == dat[1]:
-                        return {"zone":z, "items":dat[2].split(','), "taxes":dat[3]}
+                        META = {
+                            "zone":z,
+                            "items":dat[2].split(','),
+                            "taxes":dat[3],
+                            "bag": int(dat[4])
+                            }
 
 def logIn(namePlayer):
     with open(_PATH + 'save') as f:
@@ -106,11 +114,9 @@ def logIn(namePlayer):
                     if z.name == dat[1]: return Player(dat[0], z, dat[2].split(','))
         return Player(namePlayer, META["zone"], META["items"])
 
-_MBAG = 10 # MAX BAG CAPACITY
 _PATH = "dq1/"
 
 ZONES = list()
 EVENTS = list()
 ITEMS = list()
-
-META = loadData(_PATH + 'data')
+META = tuple()

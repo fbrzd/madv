@@ -35,6 +35,7 @@ def show_madv(player, events):
 _TWAIT = 2
 
 # INIT
+back.loadData('dq1/')
 musicMain = Sound(back._PATH + 'main.wav')
 musicTown = Sound(back._PATH + 'town.wav')
 musicDung = Sound(back._PATH + 'dung.wav')
@@ -62,7 +63,7 @@ while len(player.items):
         player.items.remove(cmd[1])
         new = player.zone.change()
         player.items.append(new)
-        print(fstr("change %s for %s" % (cmd[1], new)))
+        print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
     
     if cmd[0] == 'q': break
 
