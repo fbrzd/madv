@@ -1,0 +1,19 @@
+event;slime;sword;N;H2
+event;ghost;book;N;H2
+event;chest;key;I2;N
+event;dragon;wand;I4;H3
+event;shrine;gold;I2;N
+
+zone;town;tant;0;castle that reigns over alefgard;sword,gold,key
+zone;town;rimu;1;small town nearest of a swamp;book,key
+zone;town;merc;2;big town with many people and shops;wand,gold,sword
+zone;dung;swmp;2;small swamp created by dragonlord;slime,chest,shrine
+zone;dung;drag;4;the dragonlord's castle...;dragon,chest,ghost
+
+item;sword
+item;book
+item;gold
+item;key
+item;wand
+
+meta;tant;sword,sword,key,key;gold
