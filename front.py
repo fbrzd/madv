@@ -1,42 +1,6 @@
-from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-from pygame import mixer
 from time import sleep
+from util import *
 import back
-
-mixer.init()
-class Sound:
-    def __init__(self,nf):
-        self.nf = nf
-    def play(self):
-        try:
-            mixer.music.load(self.nf)
-            mixer.music.play(-1)
-        except:
-            print(fstr("not music available",'ic','red'))
-
-def fstr(src,att='n',font='default',back='default',end=True):
-	F = {'n':'0','b':'1','s':'2','i':'3','u':'4','r':'7','h':'8','c':'9'}
-	C = {'black':30,'red':31,'green':32,'yellow':33,'blue':34,'magenta':35,
-		 'cyan':36,'white':37,'default':39}
-	try:
-	    pre = "\033[" + ';'.join(map(lambda f: F[f], att))
-	    pre += ';' + str(C[font]) + ';' + str(C[back]+10) + 'm'
-	except:
-	    pre = ''
-	return pre + str(src) + '\033[0m'*end
-def parse_cmd(cmds, promt=fstr("cmd: ", 'b'), unknow=fstr("unknow cmd!", 'n', 'red')):
-    while 1:
-        cmd = input(promt)
-        if cmd == "":
-            return None
-        cmd = cmd.split(" ")
-        if cmd[0] not in cmds: print(unknow)
-        else: return cmd
-def qyn(text):
-    while 1:
-        cmd = input(text)
-        if cmd == "y" or cmd == "n": return "ny".index(cmd)
 
 def show_main(player):
     zf = []
@@ -55,29 +19,44 @@ def show_madv(player, events):
         prev = len(player.items)
         #print("DEBUG:", prev)
         end = e.clash(player)
-        print(fstr(("lose", "win!")[end], font=("red","green")[end]), end='')
-        if not len(player.items): break
+        print(fstr(("lose", "win!")[end], font=("red","green")[end]), end='', flush=1)
+        if not len(player.items):
+            print(fstr(' ... die', 'b', 'red'))
+            break
 
         #print("DEBUG:", len(player.items), prev < len(player.items) - end)
         if end:
-            print(" [use %s]" % fstr(e.weak, 'b'), end='')
+            print(" [use %s]" % fstr(e.weak, 'b'), end='', flush=1)
         
-        print(" " + fstr("reward",'i') + "!" if prev - end < len(player.items) else '')
+        print(" " + fstr("reward",'i') + "!" if prev - end < len(player.items) else '', flush=1)
+        sleep(_TWAIT)
+
+# CONST
+_TWAIT = 2
 
 # INIT
-_TWAIT = 2
+musicMain = Sound(back._PATH + 'main.wav')
+musicTown = Sound(back._PATH + 'town.wav')
+musicDung = Sound(back._PATH + 'dung.wav')
+
+musicMain.play()
 player = back.logIn(input(fstr("name: ", 'b')))
+if type(player.zone) == back.Town: musicTown.play()
+if type(player.zone) == back.Dung: musicDung.play()
 
 # MAIN LOOP
 while len(player.items):
-    cmd = parse_cmd(("mov", "run", "chg", 'q'), fstr("[%s] > " % player.name, 'b'))
+    cmd = parse_cmd(("mov", "chg", 'q'), fstr("[%s] > " % player.name, 'b'))
 
     if not cmd:
         show_main(player)
         continue
     
     if cmd[0] == "mov":
-        show_madv(player, player.move(cmd[1]))
+        evs = player.move(cmd[1])
+        if type(player.zone) == back.Town: musicTown.play()
+        if type(player.zone) == back.Dung: musicDung.play()
+        show_madv(player, evs)
     
     if cmd[0] == "chg" and cmd[1] in player.items and type(player.zone) == back.Town:
         player.items.remove(cmd[1])

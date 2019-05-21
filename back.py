@@ -40,9 +40,9 @@ class Player:
                         self.zone = z
         return []
     def save(self):
-        with open(_SAVE) as f:
+        with open(_PATH + 'save') as f:
             old = filter(lambda x: x.split(';')[0] != self.name, f.readlines())
-        with open(_SAVE, 'w') as f:
+        with open(_PATH + 'save', 'w') as f:
             s = "%s;%s;%s" % (self.name, self.zone.name, ','.join(self.items))
             f.write(s + '\n')
             f.writelines(old)
@@ -97,7 +97,7 @@ def loadData(nf):
                         return {"zone":z, "items":dat[2].split(','), "taxes":dat[3]}
 
 def logIn(namePlayer):
-    with open(_SAVE) as f:
+    with open(_PATH + 'save') as f:
         for l in f:
             if len(l) == 1: continue
             dat = l.strip().split(';')
@@ -107,11 +107,10 @@ def logIn(namePlayer):
         return Player(namePlayer, META["zone"], META["items"])
 
 _MBAG = 10 # MAX BAG CAPACITY
-_DATA = "dq1"
-_SAVE = "save"
+_PATH = "dq1/"
 
 ZONES = list()
 EVENTS = list()
 ITEMS = list()
 
-META = loadData(_DATA)
+META = loadData(_PATH + 'data')
