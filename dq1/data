@@ -16,4 +16,8 @@ item;gold
 item;key
 item;wand
 
+goal;dragon's clean;W5;drag
+goal;collect weapon;G4;sword
+goal;explore swamp;M3;swmp
+
 meta;tant;sword,sword,key,key;gold;5

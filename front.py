@@ -59,11 +59,12 @@ while len(player.items):
         if type(player.zone) == back.Dung: musicDung.play()
         show_madv(player, evs)
     
-    if cmd[0] == "chg" and cmd[1] in player.items and type(player.zone) == back.Town:
-        player.items.remove(cmd[1])
-        new = player.zone.change()
-        player.items.append(new)
-        print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
+    if cmd[0] == "chg":
+        #player.items.remove(cmd[1])
+        #new = player.zone.change()
+        new = player.change(cmd[1])
+        #player.items.append(new)
+        if new: print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
     
     if cmd[0] == 'q': break
 
