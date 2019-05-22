@@ -49,9 +49,12 @@ def show_goal(player):
 
 # CONST
 _TWAIT = 2
+_PATH = argv[-1]
+
+if "-m" in argv: Sound.mute = True
 
 # INIT
-back.loadData(argv[1])
+back.loadData(_PATH)
 musicMain = Sound(back._PATH + 'main.wav')
 musicTown = Sound(back._PATH + 'town.wav')
 musicDung = Sound(back._PATH + 'dung.wav')

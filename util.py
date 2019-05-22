@@ -4,14 +4,16 @@ from pygame import mixer
 
 mixer.init()
 class Sound:
+    mute = False
     def __init__(self,nf):
         self.nf = nf
     def play(self):
-        try:
-            mixer.music.load(self.nf)
-            mixer.music.play(-1)
-        except:
-            print(fstr("not music available",'ic','red'))
+        if not self.mute:
+            try:
+                mixer.music.load(self.nf)
+                mixer.music.play(-1)
+            except:
+                print(fstr("not music available",'ic','red'))
 
 def fstr(src,att='n',font='default',back='default',end=True):
 	F = {'n':'0','b':'1','s':'2','i':'3','u':'4','r':'7','h':'8','c':'9'}
