@@ -18,16 +18,18 @@ class Dung(Zone):
         self.events = events
 
 class Player:
-    def __init__(self, name, zone, items):
+    def __init__(self, name, zone, items, load=False):
         self.name = name
         self.zone = zone
         self.items = items
+
         self.winEvent = dict(map(lambda e: (e.name, 0), EVENTS))
         self.getItem = dict(map(lambda i: (i, 0), ITEMS))
         self.movZone = dict(map(lambda z: (z.name, 0), ZONES))
 
-        self.movZone[zone.name] += 1
-        for i in items: self.getItem[i] += 1
+        if not load:
+            self.movZone[zone.name] += 1
+            for i in items: self.getItem[i] += 1
     def hit(self, damage):
         random.shuffle(self.items)
         self.items = self.items[min(damage, len(self.items)) : ]
@@ -52,20 +54,21 @@ class Player:
             f.write("%s;%s;%s;" % (self.name, self.zone.name, ','.join(self.items)))
             f.write(','.join(["%s|%d" % e for e in self.winEvent.items()]) + ';')
             f.write(','.join(["%s|%d" % e for e in self.getItem.items()]) + ';')
-            f.write(','.join(["%s|%d" % e for e in self.movZone.items()]))
+            f.write(','.join(["%s|%d" % e for e in self.movZone.items()]) + '\n')
             f.writelines(old)
     def change(self, item):
         if item in self.items and type(self.zone) == Town:
-            new = random.choice(self.shop)
+            new = random.choice(self.zone.shop)
             if new != item:
-                self.items.remove()
+                self.items.remove(item)
                 self.add(new)
             return new
         return None
     def add(self, *items):
         for n,i in enumerate(items):
-            if len(items) == META["bag"]: return n
+            if len(self.items) == META["bag"]: return n
             self.items.append(i)
+            self.getItem[i] += 1
 
 class Event:
     def __init__(self, name, weak, ifWin, ifLose):
@@ -91,15 +94,16 @@ class Event:
         return end
 
 class Goal:
-    def __init__(self, name, condition):
+    def __init__(self, name, cond):
         self.name = name
-        self.condition = condition
+        self.cond = cond
+        GOALS.append(self)
     def completed(self, player):
-        if condition[0][0] == 'W': per = player.winEvent[condition[1]]
-        if condition[0][0] == 'G': per = player.getItem[condition[1]]
-        if condition[0][0] == 'M': per = player.movZone[condition[1]]
+        if self.cond[0][0] == 'W': per = player.winEvent[self.cond[1]]
+        if self.cond[0][0] == 'G': per = player.getItem[self.cond[1]]
+        if self.cond[0][0] == 'M': per = player.movZone[self.cond[1]]
         
-        return round(per / int(condition[0][1:]), 2)
+        return min(round(per / int(self.cond[0][1:]), 2), 1)
 
 def loadData(path):
     global _PATH, META
@@ -145,20 +149,22 @@ def logIn(namePlayer):
             if dat[0] == namePlayer:
                 for z in ZONES:
                     if z.name == dat[1]:
-                        p = Player(dat[0], z, dat[2].split(','))
+                        p = Player(dat[0], z, dat[2].split(','), load=True)
                         
                         # WIN-EVENT
                         for e in dat[3].split(','):
                             name,count = e.split('|')
-                            p.winEvent[name] = count
+                            p.winEvent[name] = int(count)
                         # GET-ITEM
-                        for e in dat[3].split(','):
+                        for e in dat[4].split(','):
                             name,count = e.split('|')
-                            p.getItem[name] = count
+                            p.getItem[name] = int(count)
                         # MOV-ZONE
-                        for e in dat[3].split(','):
+                        for e in dat[5].split(','):
                             name,count = e.split('|')
-                            p.movZone[name] = count
+                            p.movZone[name] = int(count)
+                        
+                        return p
                         
     return Player(namePlayer, META["zone"], META["items"])
 

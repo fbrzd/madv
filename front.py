@@ -21,7 +21,7 @@ def show_madv(player, events):
         end = e.clash(player)
         print(fstr(("lose", "win!")[end], font=("red","green")[end]), end='', flush=1)
         if not len(player.items):
-            print(fstr(' ... die', 'b', 'red'))
+            print(fstr(' [die]', 'b', 'red'))
             break
 
         #print("DEBUG:", len(player.items), prev < len(player.items) - end)
@@ -30,6 +30,21 @@ def show_madv(player, events):
         
         print(" " + fstr("reward",'i') + "!" if prev - end < len(player.items) else '', flush=1)
         sleep(_TWAIT)
+def show_goal(player):
+    for g in back.GOALS:
+        per = g.completed(player)
+        if g.cond[0][0] == 'W':
+            msg = "overcome " + fstr(g.cond[0][1:],'b') + ' "%s"' % g.cond[1]
+        if g.cond[0][0] == 'G':
+            msg = "collect " + fstr(g.cond[0][1:],'b') + ' "%s"' % g.cond[1]
+        if g.cond[0][0] == 'M':
+            msg = 'go to "%s" ' % g.cond[1] + fstr(g.cond[0][1:],'b') + ' times'
+        
+        print("  - %s: %s " % (g.name, msg), end=' ')
+        if 0 <= per <= .333: col = "red"
+        if .333 < per <= .666: col = "yellow"
+        if .666 <= per <= 1: col = "green"
+        print(fstr('(' + str(int(100*per)) + '%)', font=col))
 
 # CONST
 _TWAIT = 2
@@ -47,7 +62,7 @@ if type(player.zone) == back.Dung: musicDung.play()
 
 # MAIN LOOP
 while len(player.items):
-    cmd = parse_cmd(("mov", "chg", 'q'), fstr("[%s] > " % player.name, 'b'))
+    cmd = parse_cmd(("mov", "chg", "rol", 'q'), fstr("[%s] > " % player.name, 'b'))
 
     if not cmd:
         show_main(player)
@@ -60,12 +75,11 @@ while len(player.items):
         show_madv(player, evs)
     
     if cmd[0] == "chg":
-        #player.items.remove(cmd[1])
-        #new = player.zone.change()
         new = player.change(cmd[1])
-        #player.items.append(new)
         if new: print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
     
+    if cmd[0] == "rol": show_goal(player)
+
     if cmd[0] == 'q': break
 
 player.save()
