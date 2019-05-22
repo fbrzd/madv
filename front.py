@@ -1,4 +1,5 @@
 from time import sleep
+from sys import argv
 from util import *
 import back
 
@@ -50,7 +51,7 @@ def show_goal(player):
 _TWAIT = 2
 
 # INIT
-back.loadData('dq1/')
+back.loadData(argv[1])
 musicMain = Sound(back._PATH + 'main.wav')
 musicTown = Sound(back._PATH + 'town.wav')
 musicDung = Sound(back._PATH + 'dung.wav')

@@ -1,4 +1,5 @@
 import back
+from sys import argv
 from util import fstr
 
 # BALANCE DE ITEMS AL ENTRAR
@@ -65,7 +66,7 @@ def freq_event(verb=True):
 
 
 if __name__ == "__main__":
-    back.loadData('dq1/')
+    back.loadData(argv[1])
 
     bal_dung_item()
     val_item()

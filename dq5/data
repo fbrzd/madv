@@ -1,0 +1,23 @@
+event;slime;sword;N;H1
+event;beast;food;N;H1
+event;demon;ring;I3;H2
+event;chest;key;I3;N
+
+zone;town;gran;0;home castle around by forest;sword,gold
+zone;town;sara;1;gentle town, where live a rich;gold,key
+zone;town;zeni;2;old castle in the sky;ring,sword,key
+zone;dung;kroc;2;temple of evil priest;slime,chest
+zone;dung;evil;5;evil land...;demon,chest,beast
+
+item;sword
+item;gold
+item;key
+item;ring
+item;food
+
+goal;expel demons;W5;demon
+goal;pool rings;G3;ring
+goal;care beasts;G5;food
+goal;protect wife;M3;sara
+
+meta;gran;sword,sword,key,food;gold;5
