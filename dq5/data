@@ -1,17 +1,16 @@
 event;slime;sword;N;H1
-event;beast;food;N;H1
-event;demon;ring;I3;H2
-event;chest;;I2;N
+event;beast;food;I1;H1
+event;demon;ring;I3;H4
+event;chest;;I1;N
 
-zone;town;gran;0;home castle around by forest;sword,gold
-zone;town;sara;1;gentle town, where live a rich;gold,key
-zone;town;zeni;2;old castle in the sky;ring,sword,key
+zone;town;gran;0;home castle around by forest;sword,food
+zone;town;sara;1;gentle town, where live a rich;gold,food
+zone;town;zeni;2;old castle in the sky;ring,sword
 zone;dung;kroc;2;temple of evil priest;slime,chest
 zone;dung;evil;5;evil land...;demon,chest,beast
 
 item;sword
 item;gold
-item;key
 item;ring
 item;food
 

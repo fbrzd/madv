@@ -67,8 +67,16 @@ def freq_event(verb=True):
 
 
 if __name__ == "__main__":
-    back.loadData(argv[1])
+    back.loadData(argv[-1])
 
-    bal_dung_item()
-    val_item()
-    freq_event()
+    if "-a" in argv or len(argv) < 3:
+        bal_dung_item()
+        val_item()
+        freq_event()
+    
+    if "-d" in argv:
+        bal_dung_item() 
+    if "-i" in argv:
+        val_item()
+    if "-e" in argv:
+        freq_event()
