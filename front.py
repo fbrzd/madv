@@ -26,7 +26,7 @@ def show_madv(player, events):
             break
 
         #print("DEBUG:", len(player.items), prev < len(player.items) - end)
-        if end:
+        if end and e.weak:
             print(" [use %s]" % fstr(e.weak, 'b'), end='', flush=1)
         
         print(" " + fstr("reward",'i') + "!" if prev - end < len(player.items) else '', flush=1)

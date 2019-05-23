@@ -79,9 +79,9 @@ class Event:
         self.ifLose = ifLose
         EVENTS.append(self)
     def clash(self, player):
-        end = int(self.weak in player.items)
+        end = int(not self.weak or (self.weak in player.items))
         if end:
-            player.items.remove(self.weak)
+            if self.weak: player.items.remove(self.weak)
             player.winEvent[self.name] += 1
         code = (self.ifLose, self.ifWin)[end]
 

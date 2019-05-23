@@ -1,7 +1,7 @@
 event;slime;sword;N;H1
 event;beast;food;N;H1
 event;demon;ring;I3;H2
-event;chest;key;I3;N
+event;chest;;I2;N
 
 zone;town;gran;0;home castle around by forest;sword,gold
 zone;town;sara;1;gentle town, where live a rich;gold,key

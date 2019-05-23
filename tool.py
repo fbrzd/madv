@@ -12,11 +12,12 @@ def bal_dung_item(verb=True):
         n_events, n_count = len(zone.events), 0
         for e in zone.events:
             prob_e = 0
-            if e.ifWin[0] == 'I': prob_e += .5 * (int(e.ifWin[1:]) - 1)
-            if e.ifWin[0] == 'H': prob_e += .5 * (-int(e.ifWin[1:]) - 1)
-            if e.ifWin[0] == 'N': prob_e += .5 * (- 1)
-            if e.ifLose[0] == 'I': prob_e += .5 * int(e.ifLose[1:])
-            if e.ifLose[0] == 'H': prob_e += .5 * -int(e.ifLose[1:])
+            w = bool(e.weak)
+            if e.ifWin[0] == 'I': prob_e += .5 * (2 - w) * (int(e.ifWin[1:]) - w)
+            if e.ifWin[0] == 'H': prob_e += .5 * (2 - w) * (-int(e.ifWin[1:]) - w)
+            if e.ifWin[0] == 'N': prob_e += .5 * (2 - w) * (- w)
+            if e.ifLose[0] == 'I': prob_e += .5 * w * int(e.ifLose[1:])
+            if e.ifLose[0] == 'H': prob_e += .5 * w * -int(e.ifLose[1:])
             if e.ifLose[0] == 'N': prob_e += 0
             if verb: print("  - items in event", fstr(e.name, 'i') + ':', prob_e)
             n_count +=  prob_e
