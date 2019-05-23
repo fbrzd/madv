@@ -51,10 +51,11 @@ class Player:
         with open(_PATH + 'save') as f:
             old = filter(lambda x: x.split(';')[0] != self.name, f.readlines())
         with open(_PATH + 'save', 'w') as f:
-            f.write("%s;%s;%s;" % (self.name, self.zone.name, ','.join(self.items)))
-            f.write(','.join(["%s|%d" % e for e in self.winEvent.items()]) + ';')
-            f.write(','.join(["%s|%d" % e for e in self.getItem.items()]) + ';')
-            f.write(','.join(["%s|%d" % e for e in self.movZone.items()]) + '\n')
+            if len(self.items):
+                f.write("%s;%s;%s;" % (self.name, self.zone.name, ','.join(self.items)))
+                f.write(','.join(["%s|%d" % e for e in self.winEvent.items()]) + ';')
+                f.write(','.join(["%s|%d" % e for e in self.getItem.items()]) + ';')
+                f.write(','.join(["%s|%d" % e for e in self.movZone.items()]) + '\n')
             f.writelines(old)
     def change(self, item):
         if item in self.items and type(self.zone) == Town:
