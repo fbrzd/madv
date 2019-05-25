@@ -32,6 +32,8 @@ def show_madv(player, events):
         print(" " + fstr("reward",'i') + "!" if prev - (end and bool(e.weak)) < len(player.items) else '', flush=1)
         sleep(_TWAIT)
 def show_goal(player):
+    
+    ends = True
     for g in back.GOALS:
         per = g.completed(player)
         if g.cond == 'W':
@@ -46,9 +48,13 @@ def show_goal(player):
         if .333 < per <= .666: col = "yellow"
         if .666 <= per <= 1: col = "green"
         print(fstr('(' + str(int(100*per)) + '%)', font=col))
+        if per < 1: ends = False
+    
+    return ends
 
 # CONST
 _TWAIT = 2
+_LIMITX = 30
 _PATH = argv[-1]
 
 if "-m" in argv: Sound.mute = True
@@ -58,11 +64,13 @@ back.loadData(_PATH)
 musicMain = Sound(back._PATH + 'main.wav')
 musicTown = Sound(back._PATH + 'town.wav')
 musicDung = Sound(back._PATH + 'dung.wav')
+musicEnds = Sound(back._PATH + 'ends.wav')
 
 musicMain.play()
 player = back.logIn(input(fstr("name: ", 'b')))
 if type(player.zone) == back.Town: musicTown.play()
 if type(player.zone) == back.Dung: musicDung.play()
+dtxt('"'+back.META["start"]+'"', _LIMITX, _TWAIT, 2)
 
 # MAIN LOOP
 while len(player.items):
@@ -82,7 +90,9 @@ while len(player.items):
         new = player.change(cmd[1])
         if new: print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
     
-    if cmd[0] == "rol": show_goal(player)
+    if cmd[0] == "rol" and show_goal(player):
+        musicEnds.play()
+        dtxt('"'+back.META["final"]+'"', _LIMITX, _TWAIT, 2)
 
     if cmd[0] == 'q': break
 

@@ -141,7 +141,9 @@ def loadData(path):
                             "zone":z,
                             "items":dat[2].split(','),
                             "taxes":dat[3],
-                            "bag": int(dat[4])
+                            "bag": int(dat[4]),
+                            "start":dat[5],
+                            "final":dat[6],
                             })
         META = METAS[0]
 
