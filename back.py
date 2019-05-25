@@ -95,16 +95,17 @@ class Event:
         return end
 
 class Goal:
-    def __init__(self, name, cond):
+    def __init__(self, name, cond, *args):
         self.name = name
         self.cond = cond
+        self.args = args # VALUE, COUNT
         GOALS.append(self)
     def completed(self, player):
-        if self.cond[0][0] == 'W': per = player.winEvent[self.cond[1]]
-        if self.cond[0][0] == 'G': per = player.getItem[self.cond[1]]
-        if self.cond[0][0] == 'M': per = player.movZone[self.cond[1]]
+        if self.cond == 'W': per = player.winEvent[self.args[0]]
+        if self.cond == 'G': per = player.getItem[self.args[0]]
+        if self.cond == 'M': per = player.movZone[self.args[0]]
         
-        return min(round(per / int(self.cond[0][1:]), 2), 1)
+        return min(round(per / self.args[1], 2), 1)
 
 def loadData(path):
     global _PATH, META
@@ -130,17 +131,19 @@ def loadData(path):
             # ITEM
             if dat[0] == "item": ITEMS.append(dat[1])
             # GOAL
-            if dat[0] == "goal": Goal(dat[1], (dat[2], dat[3]))
+            if dat[0] == "goal":
+                Goal(dat[1], dat[2][0], dat[3], int(dat[2][1:]))
             # INIT
             if dat[0] == "meta":
                 for z in ZONES:
                     if z.name == dat[1]:
-                        META = {
+                        METAS.append({
                             "zone":z,
                             "items":dat[2].split(','),
                             "taxes":dat[3],
                             "bag": int(dat[4])
-                            }
+                            })
+        META = METAS[0]
 
 def logIn(namePlayer):
     with open(_PATH + 'save') as f:
@@ -169,6 +172,16 @@ def logIn(namePlayer):
                         
     return Player(namePlayer, META["zone"], META["items"])
 
+def zoneByName(name):
+    for z in ZONES:
+        if z.name == name: return z
+    return None
+
+def eventByName(name):
+    for e in EVENTS:
+        if e.name == name: return e
+    return None
+
 _PATH = "dq1/"
 
 ZONES = list()
@@ -176,4 +189,5 @@ EVENTS = list()
 ITEMS = list()
 GOALS = list()
 
-META = tuple()
+METAS = list()
+META = None

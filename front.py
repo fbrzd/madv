@@ -34,12 +34,12 @@ def show_madv(player, events):
 def show_goal(player):
     for g in back.GOALS:
         per = g.completed(player)
-        if g.cond[0][0] == 'W':
-            msg = "overcome " + fstr(g.cond[0][1:],'b') + ' "%s"' % g.cond[1]
-        if g.cond[0][0] == 'G':
-            msg = "collect " + fstr(g.cond[0][1:],'b') + ' "%s"' % g.cond[1]
-        if g.cond[0][0] == 'M':
-            msg = 'go to "%s" ' % g.cond[1] + fstr(g.cond[0][1:],'b') + ' times'
+        if g.cond == 'W':
+            msg = "overcome " + fstr(g.args[1], 'b') + ' "%s"' % g.args[0]
+        if g.cond == 'G':
+            msg = "collect " + fstr(g.args[1], 'b') + ' "%s"' % g.args[0]
+        if g.cond == 'M':
+            msg = 'go to "%s" ' % g.args[0] + fstr(g.args[1],'b') + ' times'
         
         print("  - %s: %s " % (g.name, msg), end=' ')
         if 0 <= per <= .333: col = "red"
