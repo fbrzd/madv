@@ -29,7 +29,7 @@ def show_madv(player, events):
         if end and e.weak:
             print(" [use %s]" % fstr(e.weak, 'b'), end='', flush=1)
         
-        print(" " + fstr("reward",'i') + "!" if prev - end < len(player.items) else '', flush=1)
+        print(" " + fstr("reward",'i') + "!" if prev - (end and bool(e.weak)) < len(player.items) else '', flush=1)
         sleep(_TWAIT)
 def show_goal(player):
     for g in back.GOALS:

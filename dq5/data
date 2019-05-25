@@ -1,6 +1,6 @@
 event;slime;sword;N;H1
 event;beast;food;I1;H1
-event;demon;ring;I3;H4
+event;demon;ring;I2;H4
 event;chest;;I1;N
 
 zone;town;gran;0;home castle around by forest;sword,food
@@ -14,9 +14,8 @@ item;gold
 item;ring
 item;food
 
-goal;expel demons;W5;demon
-goal;pool rings;G3;ring
-goal;care beasts;G5;food
+goal;expel demons;W2;demon
+goal;care beasts;W5;beast
 goal;protect wife;M3;sara
 
-meta;gran;sword,sword,key,food;gold;5
+meta;gran;sword,sword,food,food;gold;6
