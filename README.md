@@ -21,8 +21,14 @@ If you want edit the context of game (names, weakness, meta), "dq1" is a directo
 
 Some details are omited (probability, event's weak are only one, etc)
 
+## Tool
+If you want a vision of your "data" file, can use _tool.py_, this is a module what summarize:
+- balance of items in a dungeon, based on events that give items or not. flag __-d__.
+- item's "price", with means computing of taxes in town where be changes. flag __-i__.
+- event's frequency, count in all dungeons, all events. flag __-e__.
+
 ## Future Features
 - Better customization via extern files.
 - Procedural generation.
 - Ascci Art
-- Math tool for analisis of data game
+- Better math tool for analisis of data game

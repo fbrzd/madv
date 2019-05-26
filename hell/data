@@ -1,0 +1,22 @@
+item;knife
+item;beer
+item;drag
+item;eye
+
+event;chest;;I1;N
+event;crazy;knife;N;H2
+event;lava;drag;N;H2
+event;witch;eye;I2;H3
+event;demon;beer;I3;N
+
+zone;town;home;0;your home, poor village around by forest;knife,drag
+zone;town;zoma;1;town between mountains, here make beer;beer,knife
+zone;town;rosa;2;old days was a witch center, yet remain treasures...;eye,drag
+zone;dung;fore;2;forest near of home where walk demons & crazed;crazy,demon,chest
+zone;dung;cave;3;the secret of zoma's beer hold here;chest,lava
+zone;dung;volc;5;from this volcano origins all rivers and seas of lava;witch,lava,chest
+
+goal;explorar territorio;M3;rosa
+goal;eliminar brujas;W5;witch
+
+meta;home;knife,knife,beer;drag;5;en estas tierras gobernadas por demonios y locos que corren sueltos, ha surgido un grupo de brujas que planean robar todo el poder del volcan. explora la ciudad bruja y derrotalas;gracias a ti el volcan puede descansar tranquilo, los mares de lava que surgen de el y el pueblo de demonios del infierno te recompesara de por vida. todos esperan que las brujas no vuelvan a aparecer en este u otro mundo...
