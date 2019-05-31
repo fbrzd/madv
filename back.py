@@ -1,4 +1,5 @@
 import random
+import gc
 
 class Zone:
     def __init__(self, name, level, description):
@@ -18,22 +19,25 @@ class Dung(Zone):
         self.events = events
 
 class Player:
-    def __init__(self, name, zone, items, load=False):
+    def __init__(self, name, clas, load=False):
         self.name = name
-        self.zone = zone
-        self.items = items
+        self.clas = clas
 
         self.winEvent = dict(map(lambda e: (e.name, 0), EVENTS))
         self.getItem = dict(map(lambda i: (i, 0), ITEMS))
         self.movZone = dict(map(lambda z: (z.name, 0), ZONES))
 
         if not load:
-            self.movZone[zone.name] += 1
-            for i in items: self.getItem[i] += 1
+            self.hp = CLASS[clas][1]
+            self.zone = META["zone"]
+            self.items = CLASS[clas][2]
+            self.movZone[self.zone.name] += 1
+            for i in self.items: self.getItem[i] += 1
     def hit(self, damage):
-        random.shuffle(self.items)
-        self.items = self.items[min(damage, len(self.items)) : ]
-        return len(self.items)
+        self.hp = max(0, self.hp - damage)
+        return self.hp
+    def res(self, heal):
+        self.hp = min(CLASS[self.clas][1], self.hp + heal)
     def move(self, nameZone):
         z = zoneByName(nameZone)
         if type(z) == Dung:
@@ -45,13 +49,14 @@ class Player:
                 [self.items.remove(META["taxes"]) for i in range(z.level)]
                 self.zone = z
                 self.movZone[z.name] += 1
+                self.res(z.level)
         return []
     def save(self):
         with open(_PATH + 'save') as f:
             old = filter(lambda x: x.split(';')[0] != self.name, f.readlines())
         with open(_PATH + 'save', 'w') as f:
-            if len(self.items):
-                f.write("%s;%s;%s;" % (self.name, self.zone.name, ','.join(self.items)))
+            if self.hp:
+                f.write("%s;%s;%s;%s;%s;" % (self.name, self.clas, self.hp, self.zone.name, ','.join(self.items)))
                 f.write(','.join(["%s|%d" % e for e in self.winEvent.items()]) + ';')
                 f.write(','.join(["%s|%d" % e for e in self.getItem.items()]) + ';')
                 f.write(','.join(["%s|%d" % e for e in self.movZone.items()]) + '\n')
@@ -66,7 +71,7 @@ class Player:
         return None
     def add(self, *items):
         for n,i in enumerate(items):
-            if len(self.items) == META["bag"]: return n
+            if len(self.items) == CLASS[self.clas][0]: return n
             self.items.append(i)
             self.getItem[i] += 1
 
@@ -85,9 +90,9 @@ class Event:
         code = (self.ifLose, self.ifWin)[end]
 
         # H<N>: GOLPEA AL JUGADOR <N> VECES
-        if code[0] == 'H': player.hit(int(code[1]))
+        if code[0] == 'H': player.hit(int(code[1:]))
         # I<N>: ENTREGA <N> ITEMS ALEATORIOS
-        if code[0] == 'I': player.add(*[random.choice(ITEMS) for i in range(int(code[1]))])
+        if code[0] == 'I': player.add(*[random.choice(ITEMS) for i in range(int(code[1:]))])
         # T<Z>: TELEPORTAR A ZONA <Z>
         if code[0] == 'Z': player.zone = zoneByName(code[1:])
         # N: NO PASA NADA
@@ -132,20 +137,18 @@ def loadData(path):
             # ITEM
             if dat[0] == "item": ITEMS.append(dat[1])
             # GOAL
-            if dat[0] == "goal":
-                Goal(dat[1], dat[2][0], dat[3], int(dat[2][1:]))
+            if dat[0] == "goal": Goal(dat[1], dat[2][0], dat[3], int(dat[2][1:]))
             # INIT
             if dat[0] == "meta":
-                for z in ZONES:
-                    if z.name == dat[1]:
-                        METAS.append({
-                            "zone":z,
-                            "items":dat[2].split(','),
-                            "taxes":dat[3],
-                            "bag": int(dat[4]),
-                            "start":dat[5],
-                            "final":dat[6],
-                            })
+                METAS.append({
+                    "zone":zoneByName(dat[1]),
+                    "taxes":dat[2],
+                    "start":dat[3],
+                    "final":dat[4],
+                    })
+            #CLASS
+            if dat[0] == "class": CLASS[dat[1]] = (int(dat[2]), int(dat[3]) ,dat[4].split(','))
+
         META = METAS[0]
 
 def logIn(namePlayer):
@@ -154,26 +157,29 @@ def logIn(namePlayer):
             if len(l) == 1: continue
             dat = l.strip().split(';')
             if dat[0] == namePlayer:
-                for z in ZONES:
-                    if z.name == dat[1]:
-                        p = Player(dat[0], z, dat[2].split(','), load=True)
-                        
-                        # WIN-EVENT
-                        for e in dat[3].split(','):
-                            name,count = e.split('|')
-                            p.winEvent[name] = int(count)
-                        # GET-ITEM
-                        for e in dat[4].split(','):
-                            name,count = e.split('|')
-                            p.getItem[name] = int(count)
-                        # MOV-ZONE
-                        for e in dat[5].split(','):
-                            name,count = e.split('|')
-                            p.movZone[name] = int(count)
-                        
-                        return p
-                        
-    return Player(namePlayer, META["zone"], META["items"])
+                p = Player(dat[0], dat[1], load=True)
+                # HP
+                p.hp = int(dat[2])
+                # ZONE
+                p.zone = zoneByName(dat[3])
+                # ITEMS
+                p.items = dat[4].split(',')
+                # WIN-EVENT
+                for e in dat[5].split(','):
+                    name,count = e.split('|')
+                    p.winEvent[name] = int(count)
+                # GET-ITEM
+                for e in dat[6].split(','):
+                    name,count = e.split('|')
+                    p.getItem[name] = int(count)
+                # MOV-ZONE
+                for e in dat[7].split(','):
+                    name,count = e.split('|')
+                    p.movZone[name] = int(count)
+                
+                return p
+    
+    return None # Player(namePlayer, META["zone"], "warr")
 
 def zoneByName(name):
     for z in ZONES:
@@ -191,6 +197,9 @@ ZONES = list()
 EVENTS = list()
 ITEMS = list()
 GOALS = list()
+CLASS = dict()
 
 METAS = list()
 META = None
+
+#gc.collect()

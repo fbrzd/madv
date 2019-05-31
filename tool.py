@@ -9,21 +9,23 @@ def bal_dung_item(verb=True):
     for zone in filter(lambda z: type(z) == back.Dung, back.ZONES):
         if verb: print(fstr(zone.name, 'b') + ':')
         
-        n_events, n_count = len(zone.events), 0
+        n_events, count_it, count_hp = len(zone.events), 0, 0
         for e in zone.events:
-            prob_e = 0
+            bal_hp, bal_it = 0, 0
             w = bool(e.weak)
-            if e.ifWin[0] == 'I': prob_e += .5 * (2 - w) * (int(e.ifWin[1:]) - w)
-            if e.ifWin[0] == 'H': prob_e += .5 * (2 - w) * (-int(e.ifWin[1:]) - w)
-            if e.ifWin[0] == 'N': prob_e += .5 * (2 - w) * (- w)
-            if e.ifLose[0] == 'I': prob_e += .5 * w * int(e.ifLose[1:])
-            if e.ifLose[0] == 'H': prob_e += .5 * w * -int(e.ifLose[1:])
-            if e.ifLose[0] == 'N': prob_e += 0
-            if verb: print("  - items in event", fstr(e.name, 'i') + ':', prob_e)
-            n_count +=  prob_e
+            if e.ifWin[0] == 'I':  bal_it += .5 * (2 - w) * (int(e.ifWin[1:]) - w)
+            if e.ifWin[0] == 'H': bal_hp += .5 * (2 - w) * (-int(e.ifWin[1:]) - w)
+            if e.ifWin[0] == 'N': bal_it += .5 * (2 - w) * (- w)
+            if e.ifLose[0] == 'I': bal_it += .5 * w * int(e.ifLose[1:])
+            if e.ifLose[0] == 'H': bal_hp += .5 * w * -int(e.ifLose[1:])
+            if verb: print("  - items & hp in event", fstr(e.name, 'i') + ':', bal_it, bal_hp)
+            count_it += bal_it
+            count_hp += bal_hp
         
-        dungitem[zone.name] = round(n_count / n_events, 2)
-        if verb: print("  * balance:", fstr(round(n_count / len(zone.events), 2), 'b'), "items")
+        dungitem[zone.name] = (round(count_it / n_events, 2), round(count_hp / n_events, 2))
+        bal_it = fstr(round(count_it / n_events, 2), 'b')
+        bal_hp = fstr(round(count_hp / n_events, 2), 'b')
+        if verb: print("  * balance:", bal_it, "items,", bal_hp, "hp")
     
     return dungitem
 

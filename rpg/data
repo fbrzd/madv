@@ -20,6 +20,10 @@ zone;dung;cave;2;;chest,golem,thief
 zone;dung;dive;4;;siren,thief
 zone;dung;high;5;;drag,ghost,chest
 
+class;warr;5;3;sword,sword
+class;wise;5;2;flute,book
+class;merc;6;2;gold,gold,poti
+
 goal;clean high castle;W3;drag
 
-meta;fore;food,flute;gold;7;despertaste en un bosque...;el castillo en el cielo ha sido limpiado
+meta;fore;gold;despertaste en un bosque...;el castillo en el cielo ha sido limpiado

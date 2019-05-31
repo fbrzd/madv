@@ -21,7 +21,7 @@ def show_madv(player, events):
         pzon = player.zone
         end = e.clash(player)
         print(fstr(("lose", "win!")[end], font=("red","green")[end]), end='', flush=1)
-        if not len(player.items):
+        if not player.hp:
             print(fstr(' [die]', 'b', 'red'))
             break
 
@@ -56,6 +56,9 @@ def show_goal(player):
         if per < 1: ends = False
     
     return ends
+def make_promt(player):
+    col = ('red','default')[player.hp / back.CLASS[player.clas][1] > .5]
+    return fstr("[%s] > " % player.name, 'b', col)
 
 # CONST
 _TWAIT = 2
@@ -66,20 +69,25 @@ if "-m" in argv: Sound.mute = True
 
 # INIT
 back.loadData(_PATH)
-musicMain = Sound(back._PATH + 'main.wav')
-musicTown = Sound(back._PATH + 'town.wav')
-musicDung = Sound(back._PATH + 'dung.wav')
-musicEnds = Sound(back._PATH + 'ends.wav')
-
+musicMain = Sound(_PATH + 'main.wav')
+musicTown = Sound(_PATH + 'town.wav')
+musicDung = Sound(_PATH + 'dung.wav')
+musicEnds = Sound(_PATH + 'ends.wav')
 musicMain.play()
-player = back.logIn(input(fstr("name: ", 'b')))
+
+name = input(fstr("name: ", 'b'))
+player = back.logIn(name)
+if not player:
+    clas = parse_cmd((tuple(back.CLASS)), fstr("class: ", 'b'), fstr("not class!", 'n', 'red'))
+    player = back.Player(name, clas[0])
+
 if type(player.zone) == back.Town: musicTown.play()
 if type(player.zone) == back.Dung: musicDung.play()
 dtxt('"'+back.META["start"]+'"', _LIMITX, _TWAIT, 2)
 
 # MAIN LOOP
-while len(player.items):
-    cmd = parse_cmd(("mov", "chg", "rol", 'q'), fstr("[%s] > " % player.name, 'b'))
+while player.hp:
+    cmd = parse_cmd(("mov", "chg", "rol", 'q'), make_promt(player))
 
     if not cmd:
         show_main(player)
