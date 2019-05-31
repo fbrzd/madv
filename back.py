@@ -35,17 +35,16 @@ class Player:
         self.items = self.items[min(damage, len(self.items)) : ]
         return len(self.items)
     def move(self, nameZone):
-        for z in ZONES:
-            if z.name == nameZone:
-                if type(z) == Dung:
-                    self.zone = z
-                    self.movZone[z.name] += 1
-                    return [random.choice(z.events) for i in range(z.level)]
-                if type(z) == Town:
-                    if self.items.count(META["taxes"]) >= z.level:
-                        [self.items.remove(META["taxes"]) for i in range(z.level)]
-                        self.zone = z
-                        self.movZone[z.name] += 1
+        z = zoneByName(nameZone)
+        if type(z) == Dung:
+            self.zone = z
+            self.movZone[z.name] += 1
+            return [random.choice(z.events) for i in range(z.level)]
+        if type(z) == Town:
+            if self.items.count(META["taxes"]) >= z.level:
+                [self.items.remove(META["taxes"]) for i in range(z.level)]
+                self.zone = z
+                self.movZone[z.name] += 1
         return []
     def save(self):
         with open(_PATH + 'save') as f:
@@ -89,6 +88,8 @@ class Event:
         if code[0] == 'H': player.hit(int(code[1]))
         # I<N>: ENTREGA <N> ITEMS ALEATORIOS
         if code[0] == 'I': player.add(*[random.choice(ITEMS) for i in range(int(code[1]))])
+        # T<Z>: TELEPORTAR A ZONA <Z>
+        if code[0] == 'Z': player.zone = zoneByName(code[1:])
         # N: NO PASA NADA
         if code[0] == 'N': pass
         

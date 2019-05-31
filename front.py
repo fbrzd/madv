@@ -18,16 +18,21 @@ def show_madv(player, events):
         sleep(_TWAIT)
         
         prev = len(player.items)
-        #print("DEBUG:", prev)
+        pzon = player.zone
         end = e.clash(player)
         print(fstr(("lose", "win!")[end], font=("red","green")[end]), end='', flush=1)
         if not len(player.items):
             print(fstr(' [die]', 'b', 'red'))
             break
 
-        #print("DEBUG:", len(player.items), prev < len(player.items) - end)
         if end and e.weak:
             print(" [use %s]" % fstr(e.weak, 'b'), end='', flush=1)
+        
+        if pzon != player.zone:
+            print(' out...', flush=1)
+            if type(player.zone) == back.Town: musicTown.play()
+            if type(player.zone) == back.Dung: musicDung.play()
+            break
         
         print(" " + fstr("reward",'i') + "!" if prev - (end and bool(e.weak)) < len(player.items) else '', flush=1)
         sleep(_TWAIT)

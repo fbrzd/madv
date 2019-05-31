@@ -5,7 +5,7 @@ item;eye
 
 event;chest;;I1;N
 event;crazy;knife;N;H2
-event;lava;drag;N;H2
+event;fall;drag;N;Zrosa
 event;witch;eye;I2;H3
 event;demon;beer;I3;N
 
@@ -13,8 +13,8 @@ zone;town;home;0;your home, poor village around by forest;knife,drag
 zone;town;zoma;1;town between mountains, here make beer;beer,knife
 zone;town;rosa;2;old days was a witch center, yet remain treasures...;eye,drag
 zone;dung;fore;2;forest near of home where walk demons & crazed;crazy,demon,chest
-zone;dung;cave;3;the secret of zoma's beer hold here;chest,lava
-zone;dung;volc;5;from this volcano origins all rivers and seas of lava;witch,lava,chest
+zone;dung;cave;3;the secret of zoma's beer hold here;chest,fall
+zone;dung;volc;4;from this volcano origins all rivers and seas of lava;witch,crazy
 
 goal;explorar territorio;M3;rosa
 goal;eliminar brujas;W5;witch

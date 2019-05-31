@@ -1,0 +1,25 @@
+item;sword
+item;gold
+item;flute
+item;food
+item;book
+item;poti
+
+event;ghost;flute;I1;H1
+event;chest;;I1;N
+event;golem;book;I2;H2
+event;thief;sword;N;H2
+event;siren;poti;I2;N
+event;drag;food;N;H3
+
+zone;town;port;0;;gold,food
+zone;town;alih;1;;gold,sword,flute
+zone;town;dymz;2;town of elders users of magic;book,poti
+zone;dung;fore;2;;ghost,chest
+zone;dung;cave;2;;chest,golem,thief
+zone;dung;dive;4;;siren,thief
+zone;dung;high;5;;drag,ghost,chest
+
+goal;clean high castle;W3;drag
+
+meta;fore;food,flute;gold;7;despertaste en un bosque...;el castillo en el cielo ha sido limpiado
