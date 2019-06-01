@@ -1,5 +1,5 @@
 import random
-import gc
+#import gc
 
 class Zone:
     def __init__(self, name, level, description):
@@ -21,7 +21,7 @@ class Dung(Zone):
 class Player:
     def __init__(self, name, clas, load=False):
         self.name = name
-        self.clas = clas
+        self.clas = clas if clas else random.choice(tuple(CLASS))
 
         self.winEvent = dict(map(lambda e: (e.name, 0), EVENTS))
         self.getItem = dict(map(lambda i: (i, 0), ITEMS))

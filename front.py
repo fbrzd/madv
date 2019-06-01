@@ -75,10 +75,12 @@ musicDung = Sound(_PATH + 'dung.wav')
 musicEnds = Sound(_PATH + 'ends.wav')
 musicMain.play()
 
+# BUILD PLAYER
 name = input(fstr("name: ", 'b'))
 player = back.logIn(name)
 if not player:
     clas = parse_cmd((tuple(back.CLASS)), fstr("class: ", 'b'), fstr("not class!", 'n', 'red'))
+    if not clas: clas = [None]
     player = back.Player(name, clas[0])
 
 if type(player.zone) == back.Town: musicTown.play()
@@ -89,24 +91,27 @@ dtxt('"'+back.META["start"]+'"', _LIMITX, _TWAIT, 2)
 while player.hp:
     cmd = parse_cmd(("mov", "chg", "rol", 'q'), make_promt(player))
 
-    if not cmd:
-        show_main(player)
-        continue
-    
-    if cmd[0] == "mov":
-        evs = player.move(cmd[1])
-        if type(player.zone) == back.Town: musicTown.play()
-        if type(player.zone) == back.Dung: musicDung.play()
-        show_madv(player, evs)
-    
-    if cmd[0] == "chg":
-        new = player.change(cmd[1])
-        if new: print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
-    
-    if cmd[0] == "rol" and show_goal(player):
-        musicEnds.play()
-        dtxt('"'+back.META["final"]+'"', _LIMITX, _TWAIT, 2)
+    try:
+        if not cmd:
+            show_main(player)
+            continue
+        
+        if cmd[0] == "mov":
+            evs = player.move(cmd[1])
+            if type(player.zone) == back.Town: musicTown.play()
+            if type(player.zone) == back.Dung: musicDung.play()
+            show_madv(player, evs)
+        
+        if cmd[0] == "chg":
+            new = player.change(cmd[1])
+            if new: print("  change %s for %s" % (fstr(cmd[1],'b'), fstr(new,'b')))
+        
+        if cmd[0] == "rol" and show_goal(player):
+            musicEnds.play()
+            dtxt('"'+back.META["final"]+'"', _LIMITX, _TWAIT, 2)
 
-    if cmd[0] == 'q': break
+        if cmd[0] == 'q': break
+    except:
+        print(fstr('error!', 'red'))
 
 player.save()
