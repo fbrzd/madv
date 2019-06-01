@@ -1,5 +1,4 @@
 import random
-#import gc
 
 class Zone:
     def __init__(self, name, level, description):
@@ -28,9 +27,9 @@ class Player:
         self.movZone = dict(map(lambda z: (z.name, 0), ZONES))
 
         if not load:
-            self.hp = CLASS[clas][1]
+            self.hp = CLASS[self.clas][1]
             self.zone = META["zone"]
-            self.items = CLASS[clas][2]
+            self.items = CLASS[self.clas][2]
             self.movZone[self.zone.name] += 1
             for i in self.items: self.getItem[i] += 1
     def hit(self, damage):
@@ -201,5 +200,3 @@ CLASS = dict()
 
 METAS = list()
 META = None
-
-#gc.collect()

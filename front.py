@@ -29,7 +29,7 @@ def show_madv(player, events):
             print(" [use %s]" % fstr(e.weak, 'b'), end='', flush=1)
         
         if pzon != player.zone:
-            print(' out...', flush=1)
+            print(fstr(' out?', 'i'), flush=1)
             if type(player.zone) == back.Town: musicTown.play()
             if type(player.zone) == back.Dung: musicDung.play()
             break
@@ -58,10 +58,10 @@ def show_goal(player):
     return ends
 def make_promt(player):
     col = ('red','default')[player.hp / back.CLASS[player.clas][1] > .5]
-    return fstr("[%s] > " % player.name, 'b', col)
+    return fstr("[%s:%s] > " % (player.name,player.hp), 'b', col)
 
 # CONST
-_TWAIT = 2
+_TWAIT = 1.5 #if "-q" in argv else 1.5
 _LIMITX = 30
 _PATH = argv[-1]
 

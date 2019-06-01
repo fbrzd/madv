@@ -56,7 +56,7 @@ def parse_cmd(cmds, promt=fstr("cmd: ", 'b'), unknow=fstr("unknow cmd!", 'n', 'r
         cmd = cmd.split(" ")
         if cmd[0] not in cmds:
             print(unknow)
-            print(fstr("expected:", ', '.join(cmds), 'n', 'red'))
+            print(fstr("expected: " + ', '.join(cmds), 'n', 'red'))
         else: return cmd
 def qyn(text):
     while 1:
