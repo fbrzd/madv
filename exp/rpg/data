@@ -2,28 +2,29 @@ item;sword
 item;gold
 item;flute
 item;food
-item;book
 item;poti
 
-event;ghost;flute;I1;H1
 event;chest;;I1;N
-event;golem;book;I2;H2
-event;thief;sword;N;H2
+event;golem;flute;I2;H1
+event;thief;sword;N;H1
 event;siren;poti;I2;N
-event;drag;food;N;H3
+event;drag;food;N;H2
+event;trap;flute;N;H1
 
-zone;town;port;0;;gold,food
-zone;town;alih;1;;gold,sword,flute
-zone;town;dymz;2;town of elders users of magic;book,poti
-zone;dung;fore;2;;ghost,chest
-zone;dung;cave;2;;chest,golem,thief
-zone;dung;dive;4;;siren,thief
-zone;dung;high;5;;drag,ghost,chest
+zone;town;pirt;0;port city, lot of food & gold;gold,food
+zone;town;ilah;1;desert's merchant stay here;gold,sword,flute
+zone;town;lwin;2;town of elders users of magic;flute,poti
+zone;dung;fore;2;thief and treasures rest in here...;thief,chest
+zone;dung;cave;3;cave where live golems, care for thiefs;golem,thief,chest
+zone;dung;dive;3;mystic rune, siren live and care this place;siren,trap
+zone;dung;high;4;evil's castle, base for the dragons...;drag,trap
 
 class;warr;5;3;sword,sword
-class;wise;5;2;flute,book
+class;wise;5;2;flute,poti
 class;merc;6;2;gold,gold,poti
 
-goal;clean high castle;W3;drag
+goal;defeat evil dragons;W3;drag
+goal;meet all sirens;M4;dive
+goal;save magic flutes;G8;flute
 
 meta;fore;gold;despertaste en un bosque...;el castillo en el cielo ha sido limpiado

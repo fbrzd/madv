@@ -190,7 +190,7 @@ def eventByName(name):
         if e.name == name: return e
     return None
 
-_PATH = "dq1/"
+_PATH = "/"
 
 ZONES = list()
 EVENTS = list()

@@ -61,7 +61,7 @@ def make_promt(player):
     return fstr("[%s:%s] > " % (player.name,player.hp), 'b', col)
 
 # CONST
-_TWAIT = 1.5 #if "-q" in argv else 1.5
+_TWAIT = .3 if "-q" in argv else 1.5
 _LIMITX = 30
 _PATH = argv[-1]
 
