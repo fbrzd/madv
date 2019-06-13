@@ -1,0 +1,25 @@
+item;sword
+item;gold
+item;orb
+item;light
+
+event;slime;sword;N;H1
+event;chest;;I2;N
+event;shrine;orb;Ztant;N
+event;bmage;light;I1;H3
+
+(In item, Hn hurt, N nada, Zzone move)
+
+zone;town;alih;0;brave warriors have been born here;sword,gold
+zone;town;your;1;small town build by the hero;gold,orb
+zone;town;tant;2;castle in a land of darkness;sword,light
+zone;dung;twer;2;tower where hide a famous bandit...;slime,chest
+zone;dung;cave;3;monsters & survivors hide in these caves...;slime,shrine
+zone;dung;zoma;5;castle in the land of darkness;bmage,chest
+
+class;hero;4;4;sword,sword
+class;sage;4;3;gold,orb
+
+(Mn move, Wn win, Gn give)
+
+meta;alih;gold;intro;outro

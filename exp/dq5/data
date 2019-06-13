@@ -1,26 +1,24 @@
+item;sword
+item;gold
+item;food
+item;ring
+
 event;slime;sword;N;H1
-event;beast;food;I1;H1
-event;demon;ring;I1;H2
 event;chest;;I1;N
+event;beast;food;N;N
+event;demon;ring;I1;H2
 
 zone;town;gran;0;home castle around by forest;sword,food
 zone;town;sara;1;gentle town, where live a rich;gold,food
 zone;town;zeni;1;old castle in the sky;ring,sword
-zone;dung;kroc;2;temple of evil priest;slime,chest
-zone;dung;evil;5;evil land...;demon,chest,beast
+zone;dung;base;2;child kidnaped for slaves..!;slime,beast
+zone;dung;kroc;3;temple of evil priest;slime,chest
+zone;dung;evil;5;evil land...;demon,chest
 
 class;tame;5;3;food,food,sword
-class;warr;4;4;sword,gold
-class;merc;6;3;gold,gold,food
 class;wise;4;2;ring,gold
 
-item;sword
-item;gold
-item;ring
-item;food
-
-goal;expel demons;W2;demon
-goal;care beasts;W5;beast
-goal;protect wife;M3;sara
+goal;expell demons;W2;demon
+goal;care beast;W5;beast
 
 meta;gran;gold;los demonios corrompieron estas tierras y los seres que las habitan. derrotalos con los anillos, cuida de la ciudad de tu esposa y de las bestias;final

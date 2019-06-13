@@ -51,8 +51,12 @@ class Player:
                 self.res(z.level)
         return []
     def save(self):
-        with open(_PATH + 'save') as f:
-            old = filter(lambda x: x.split(';')[0] != self.name, f.readlines())
+        old = []
+        try:
+            with open(_PATH + 'save') as f:
+                old = filter(lambda x: x.split(';')[0] != self.name, f.readlines())
+        except:
+            pass
         with open(_PATH + 'save', 'w') as f:
             if self.hp:
                 f.write("%s;%s;%s;%s;%s;" % (self.name, self.clas, self.hp, self.zone.name, ','.join(self.items)))
@@ -93,7 +97,9 @@ class Event:
         # I<N>: ENTREGA <N> ITEMS ALEATORIOS
         if code[0] == 'I': player.add(*[random.choice(ITEMS) for i in range(int(code[1:]))])
         # T<Z>: TELEPORTAR A ZONA <Z>
-        if code[0] == 'Z': player.zone = zoneByName(code[1:])
+        if code[0] == 'Z':
+            player.movZone[player.zone.name] -= 1
+            player.zone = zoneByName(code[1:])
         # N: NO PASA NADA
         if code[0] == 'N': pass
         
@@ -151,34 +157,38 @@ def loadData(path):
         META = METAS[0]
 
 def logIn(namePlayer):
-    with open(_PATH + 'save') as f:
-        for l in f:
-            if len(l) == 1: continue
-            dat = l.strip().split(';')
-            if dat[0] == namePlayer:
-                p = Player(dat[0], dat[1], load=True)
-                # HP
-                p.hp = int(dat[2])
-                # ZONE
-                p.zone = zoneByName(dat[3])
-                # ITEMS
-                p.items = dat[4].split(',')
-                # WIN-EVENT
-                for e in dat[5].split(','):
-                    name,count = e.split('|')
-                    p.winEvent[name] = int(count)
-                # GET-ITEM
-                for e in dat[6].split(','):
-                    name,count = e.split('|')
-                    p.getItem[name] = int(count)
-                # MOV-ZONE
-                for e in dat[7].split(','):
-                    name,count = e.split('|')
-                    p.movZone[name] = int(count)
-                
-                return p
+    try:
+        f = open(_PATH + 'save')
+    except:
+        return None
     
-    return None # Player(namePlayer, META["zone"], "warr")
+    for l in f:
+        if len(l) == 1: continue
+        dat = l.strip().split(';')
+        if dat[0] == namePlayer:
+            p = Player(dat[0], dat[1], load=True)
+            # HP
+            p.hp = int(dat[2])
+            # ZONE
+            p.zone = zoneByName(dat[3])
+            # ITEMS
+            p.items = dat[4].split(',')
+            # WIN-EVENT
+            for e in dat[5].split(','):
+                name,count = e.split('|')
+                p.winEvent[name] = int(count)
+            # GET-ITEM
+            for e in dat[6].split(','):
+                name,count = e.split('|')
+                p.getItem[name] = int(count)
+            # MOV-ZONE
+            for e in dat[7].split(','):
+                name,count = e.split('|')
+                p.movZone[name] = int(count)
+            
+            return p
+    f.close()
+    return None
 
 def zoneByName(name):
     for z in ZONES:

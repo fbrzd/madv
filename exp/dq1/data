@@ -1,23 +1,23 @@
-event;slime;sword;N;H1
-event;ghost;book;N;H1
-event;chest;key;I2;N
-event;dragon;wand;I3;H3
-event;shrine;gold;I2;N
-
-zone;town;tant;0;castle that reigns over alefgard;sword,gold,key
-zone;town;rimu;1;small town nearest of a swamp;book,key
-zone;town;merc;2;big town with many people and shops;wand,gold,sword
-zone;dung;swmp;2;small swamp created by dragonlord;slime,chest,shrine
-zone;dung;drag;4;the dragonlord's castle...;dragon,chest,ghost
-
 item;sword
-item;book
 item;gold
-item;key
+item;torch
 item;wand
 
-goal;dragon's clean;W2;dragon
-goal;collect weapon;G5;sword
-goal;explore swamp;M3;swmp
+event;slime;sword;N;H1
+event;chest;;I2;N
+event;dark;torch;N;Zswmp
+event;drag;wand;I2;H2
 
-meta;tant;sword,sword,key,key;gold;5;dragonlord esta desolando las tierras de alefgard. descendiente de loto, libera el pantano, ayudanos a armarnos y derrota a los dragones de la fortaleza;la paz a regresado a nuestras tierras, desde ahora tu nombre se convertira en leyenda
+zone;town;tant;0;castle that reigns over alefgard;sword,gold
+zone;town;rimu;1;small town nearest of a swamp;sword,torch
+zone;town;merc;2;big town with many people and shops;wand,gold
+zone;dung;swmp;2;small swamp created by dragonlord;slime,chest
+zone;dung;tomb;2;tomb of old heros;dark,slime
+zone;dung;drag;4;the dragonlord's castle...;drag,dark
+
+goal;dragon's clean;W3;drag
+goal;explore hero's tomb;M5;tomb
+
+class;hero;6;4;sword,sword,torch,gold
+
+meta;tant;gold;dragonlord esta desolando las tierras de alefgard. descendiente de loto, libera el pantano y derrota a los dragones de la fortaleza;la paz a regresado a nuestras tierras, desde ahora tu nombre se convertira en leyenda

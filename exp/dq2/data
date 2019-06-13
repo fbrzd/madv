@@ -1,19 +1,24 @@
-event;slime;sword;N;H1
-event;ghost;book;N;H1
-event;chest;key;I2;N
-event;dragon;wand;I3;H3
-event;shrine;gold;I2;N
-
-zone;town;tant;0;castle that reigns over alefgard;sword,gold,key
-zone;town;rimu;1;small town nearest of a swamp;book,key
-zone;town;merc;2;big town with many people and shops;wand,gold,sword
-zone;dung;swmp;2;small swamp created by dragonlord;slime,chest,shrine
-zone;dung;drag;4;the dragonlord's castle...;dragon,chest,ghost
-
 item;sword
-item;book
 item;gold
 item;key
-item;wand
+item;crest
 
-meta;tant;sword,sword,key,key;gold;5
+event;slime;sword;N;H1
+event;chest;;I2;N
+event;door;key;I1;Zmoon
+event;priest;crest;I1;H2
+
+zone;town;mide;0;description;sword,gold
+zone;town;tant;1;description;crest,key
+zone;town;zaha;1;description;gold,key
+zone;dung;moon;2;ruin castle, destroyed by hargon...;slime,door
+zone;dung;char;3;old drag's castle, lot of treasures;slime,chest
+zone;dung;rhon;4;castle & temple of evil priest hargon...;priest,chest
+
+goal;help moonbrock castle;M5;moon
+goal;expell evil priest;W3;priest
+
+class;warr;4;4;sword,sword,key
+class;wise;3;4;gold,crest,key
+
+meta;mide;gold;start;final
