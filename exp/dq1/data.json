@@ -1,0 +1,70 @@
+{
+    "zones": [
+        {
+            "name":"tant",
+            "type":"town",
+            "level":0,
+            "description":"castle that reigns over alefgard",
+            "shop":["sword","gold"]
+        },
+        {
+            "name":"rimu",
+            "type":"town",
+            "level":1,
+            "description":"small town nearest of a cave",
+            "shop":["sword","wand"]
+        },
+        {
+            "name":"cave",
+            "type":"dung",
+            "level":2,
+            "description":"cave with monsters & treasures",
+            "events":["slime","chest"]
+        },
+        {
+            "name":"char",
+            "type":"dung",
+            "level":4,
+            "description":"the dragonlord's castle...",
+            "events":["slime","dragon"]
+        }
+    ],
+    "items": [
+        "sword",
+        "gold",
+        "wand"
+    ],
+    "events": [
+        {
+            "name":"slime",
+            "weak":"sword",
+            "ifwin":"nothing",
+            "iflose":"hit 1"
+        },
+        {
+            "name":"chest",
+            "weak":"nothing",
+            "ifwin":"give 2",
+            "iflose":"nothing"
+        },
+        {
+            "name":"dragon",
+            "weak":"wand",
+            "ifwin":"give 2",
+            "iflose":"hit 2"
+        }
+    ],
+    "goals": [
+        
+    ],
+    "start": {
+        "zone":"tant",
+        "hp":3,
+        "bag":6,
+        "items":["sword","sword","gold"]
+    },
+    "taxes": "gold",
+    "intro": "dragonlord esta desolando las tierras de alefgard. descendiente de loto, libera el pantano y derrota a los dragones de la fortaleza",
+    "outro": "la paz a regresado a nuestras tierras, desde ahora tu nombre se convertira en leyenda"
+
+}
