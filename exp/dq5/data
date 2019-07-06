@@ -4,7 +4,7 @@ item;food
 item;ring
 
 event;slime;sword;N;H1
-event;chest;;I1;N
+event;chest;;I2;N
 event;beast;food;N;N
 event;demon;ring;I1;H2
 

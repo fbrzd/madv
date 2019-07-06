@@ -1,1 +1,3 @@
-fzio;warr;5;endo;sword,sword,gold;slime|0,chest|0,block|0,elord|0;sword|2,gold|1,gas|0,flute|0;endo|1,rosa|0,zeni|0,keel|0,akte|0,evil|0
+fzio;12;warr;5;endo;sword,sword,gold,sword,sword;slime|3,chest|2,block|0,elord|6;sword|9,gold|6,gas|4,flute|7;endo|4,rosa|1,zeni|2,keel|4,akte|2,evil|0
+chaz;1;merc;2;keel;gold,gold,gas,gold,gold;slime|0,chest|1,block|0,elord|0;sword|0,gold|4,gas|1,flute|0;endo|1,rosa|0,zeni|0,keel|1,akte|0,evil|0
+solo;13;warr;3;rosa;sword,flute,sword,gold,sword;slime|3,chest|4,block|1,elord|5;sword|10,gold|5,gas|6,flute|6;endo|2,rosa|1,zeni|2,keel|4,akte|1,evil|1

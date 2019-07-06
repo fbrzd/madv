@@ -5,20 +5,20 @@ item;crest
 
 event;slime;sword;N;H1
 event;chest;;I2;N
-event;door;key;I1;Zmoon
+event;door;key;I1;Zchar
 event;priest;crest;I1;H2
 
 zone;town;mide;0;description;sword,gold
 zone;town;tant;1;description;crest,key
 zone;town;zaha;1;description;gold,key
 zone;dung;moon;2;ruin castle, destroyed by hargon...;slime,door
-zone;dung;char;3;old drag's castle, lot of treasures;slime,chest
+zone;dung;char;3;old drag's castle, treasures & secret paths!;slime,chest
 zone;dung;rhon;4;castle & temple of evil priest hargon...;priest,chest
 
 goal;help moonbrock castle;M5;moon
 goal;expell evil priest;W3;priest
 
-class;warr;4;4;sword,sword,key
-class;wise;3;4;gold,crest,key
+class;warr;5;4;sword,sword,key
+class;wise;5;3;gold,crest,key
 
-meta;mide;gold;start;final
+meta;mide;gold;el malvado sacerdote hargon planea conquistar estas tierras, moonbroock ha caido. ustedes los descendientes de loto son los destinados a salvar este mundo;gracias, descendientes de loto, han salvado estas tierras...

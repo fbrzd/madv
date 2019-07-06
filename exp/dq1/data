@@ -5,7 +5,7 @@ item;wand
 
 event;slime;sword;N;H1
 event;chest;;I2;N
-event;dark;torch;N;Zswmp
+event;dark;torch;N;Ztant
 event;drag;wand;I2;H2
 
 zone;town;tant;0;castle that reigns over alefgard;sword,gold
@@ -15,9 +15,9 @@ zone;dung;swmp;2;small swamp created by dragonlord;slime,chest
 zone;dung;tomb;2;tomb of old heros;dark,slime
 zone;dung;drag;4;the dragonlord's castle...;drag,dark
 
-goal;dragon's clean;W3;drag
-goal;explore hero's tomb;M5;tomb
+goal;dragon's clean;W5;drag
+goal;explore hero's tomb;M4;tomb
 
-class;hero;6;4;sword,sword,torch,gold
+class;hero;6;3;sword,sword,torch,gold
 
 meta;tant;gold;dragonlord esta desolando las tierras de alefgard. descendiente de loto, libera el pantano y derrota a los dragones de la fortaleza;la paz a regresado a nuestras tierras, desde ahora tu nombre se convertira en leyenda

@@ -6,12 +6,10 @@ class Zone:
         self.description = description
         self.level = level
         ZONES.append(self)
-
 class Town(Zone):
     def __init__(self, name, description, level, shop):
         Zone.__init__(self, name, description, level)
         self.shop = shop
-
 class Dung(Zone):
     def __init__(self, name, description, level, events):
         Zone.__init__(self, name, description, level)
@@ -21,6 +19,7 @@ class Player:
     def __init__(self, name, clas, load=False):
         self.name = name
         self.clas = clas if clas else random.choice(tuple(CLASS))
+        self.time = 0
 
         self.winEvent = dict(map(lambda e: (e.name, 0), EVENTS))
         self.getItem = dict(map(lambda i: (i, 0), ITEMS))
@@ -41,12 +40,14 @@ class Player:
         z = zoneByName(nameZone)
         if type(z) == Dung:
             self.zone = z
+            self.time += 1
             self.movZone[z.name] += 1
             return [random.choice(z.events) for i in range(z.level)]
         if type(z) == Town:
             if self.items.count(META["taxes"]) >= z.level:
                 [self.items.remove(META["taxes"]) for i in range(z.level)]
                 self.zone = z
+                self.time += 1
                 self.movZone[z.name] += 1
                 self.res(z.level)
         return []
@@ -59,7 +60,9 @@ class Player:
             pass
         with open(_PATH + 'save', 'w') as f:
             if self.hp:
-                f.write("%s;%s;%s;%s;%s;" % (self.name, self.clas, self.hp, self.zone.name, ','.join(self.items)))
+                # name, time, class, hp, zone, {item}
+                f.write("%s;%s;%s;%s;%s;%s;" % (self.name, self.time, self.clas, self.hp, self.zone.name, ','.join(self.items)))
+                # win-events, get-items, mov-zones
                 f.write(','.join(["%s|%d" % e for e in self.winEvent.items()]) + ';')
                 f.write(','.join(["%s|%d" % e for e in self.getItem.items()]) + ';')
                 f.write(','.join(["%s|%d" % e for e in self.movZone.items()]) + '\n')
@@ -77,7 +80,6 @@ class Player:
             if len(self.items) == CLASS[self.clas][0]: return n
             self.items.append(i)
             self.getItem[i] += 1
-
 class Event:
     def __init__(self, name, weak, ifWin, ifLose):
         self.name = name
@@ -104,7 +106,6 @@ class Event:
         if code[0] == 'N': pass
         
         return end
-
 class Goal:
     def __init__(self, name, cond, *args):
         self.name = name
@@ -155,7 +156,6 @@ def loadData(path):
             if dat[0] == "class": CLASS[dat[1]] = (int(dat[2]), int(dat[3]) ,dat[4].split(','))
 
         META = METAS[0]
-
 def logIn(namePlayer):
     try:
         f = open(_PATH + 'save')
@@ -166,39 +166,40 @@ def logIn(namePlayer):
         if len(l) == 1: continue
         dat = l.strip().split(';')
         if dat[0] == namePlayer:
-            p = Player(dat[0], dat[1], load=True)
-            # HP
-            p.hp = int(dat[2])
-            # ZONE
-            p.zone = zoneByName(dat[3])
-            # ITEMS
-            p.items = dat[4].split(',')
+            p = Player(dat[0], dat[2], load=True)
+            p.hp = int(dat[3]) # HP
+            p.time = int(dat[1]) # TIME
+            p.zone = zoneByName(dat[4]) # ZONE
+            p.items = dat[5].split(',') # ITEMS
             # WIN-EVENT
-            for e in dat[5].split(','):
+            for e in dat[6].split(','):
                 name,count = e.split('|')
                 p.winEvent[name] = int(count)
             # GET-ITEM
-            for e in dat[6].split(','):
+            for e in dat[7].split(','):
                 name,count = e.split('|')
                 p.getItem[name] = int(count)
             # MOV-ZONE
-            for e in dat[7].split(','):
+            for e in dat[8].split(','):
                 name,count = e.split('|')
                 p.movZone[name] = int(count)
             
             return p
     f.close()
     return None
-
 def zoneByName(name):
     for z in ZONES:
         if z.name == name: return z
     return None
-
 def eventByName(name):
     for e in EVENTS:
         if e.name == name: return e
     return None
+def get_advice():
+    typ = random.choice(("zone","event"))
+    if typ == "zone": obj = random.choice(ZONES)
+    if typ == "event": obj = random.choice(EVENTS)
+    return (typ, obj)
 
 _PATH = "/"
 

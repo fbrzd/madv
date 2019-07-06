@@ -5,7 +5,7 @@ item;flute
 
 event;slime;sword;N;H1
 event;chest;;I2;N
-event;block;gas;I1;Zakte
+event;block;gas;H1;Zrosa
 event;elord;flute;I2;H2
 
 zone;town;endo;0;main city, many stores & business;gold,sword
@@ -13,10 +13,10 @@ zone;town;rosa;0;main city, many stores & business;gold,gas
 zone;town;zeni;2;main city, many stores & business;flute,gas
 zone;dung;keel;2;castle reigns by lord keeleon;slime,chest
 zone;dung;akte;3;poor mine, old home of stark;elord,block
-zone;dung;evil;5;evil land, here hide psaro...;elord,slime
+zone;dung;evil;4;evil land, here hide psaro...;elord,slime
 
-class;warr;5;5;sword,sword,gold
-class;merc;4;6;gold,gold,gas
+class;warr;5;4;sword,sword,gold
+class;merc;6;3;gold,gold,gas
 
 goal;search zenithian equip;G8;sword
 goal;lull evil lords;W5;elord
