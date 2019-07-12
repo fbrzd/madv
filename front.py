@@ -1,15 +1,16 @@
 from time import sleep
 from sys import argv
 from util import *
+from random import choice
 import back
 
 def show_main(player):
     zf = []
-    for z in back.ZONES:
-        nm = fstr(f'[{z.level}]{z.name}', "nb"[player.zone == z], ("red","green")[type(z) == back.Town])
+    for z in back.world.zones.values():
+        nm = fstr(f'[{z.info}]{z.name}', "nb"[player.zone == z.name], ("red","green")[z.type == "town"])
         zf.append(nm)
     print('  ' + ' '.join(zf))
-    print('  ' + fstr(f'"{player.zone.description}"', 'i'))
+    print('  ' + fstr(f'"{back.world.zones[player.zone].description}"', 'i'))
     for i in set(player.items):
         print(f'  - {i} x{player.items.count(i)}')
 def show_madv(player, events):
@@ -71,20 +72,16 @@ def show_goal(player):
     print(fstr(f"  * turns: {player.time}", 'b'))
     return ends
 def show_advc():
-    typ,obj = back.get_advice()
-    if typ == "zone":
-        if type(obj) == back.Dung:
-            evs = ','.join(map(lambda e: e.name, obj.events))
-            advice = f'{evs} in {obj.name}'
-        if type(obj) == back.Town: advice = f'{",".join(obj.shop)} in {obj.name}'
-    if typ == "event":
+    typ,obj = back.get_advice(world)
+    if typ == "zone": advice = f'{",".join(obj.content)} in {obj.name}'
+    if typ == "event2":
         win = ("reward items","hurt hp","nothing","it moves you")["IHNZ".index(obj.ifWin[0])]
         lose = ("reward items","hurt hp","nothing","it moves you")["IHNZ".index(obj.ifLose[0])]
         advice = f'{obj.name} + {obj.weak} = {win}, else {lose}'
     print(fstr(f'* hint: {advice}', 'i', 'cyan'))
 def make_promt(player):
-    col = ('red','default')[player.hp / back.CLASS[player.clas][1] > .5]
-    promt = fstr(f'[{player.name}:{player.hp}] > ', 'b', col)
+    col = 'default'#('red','default')[player.hp / back.CLASS[player.clas][1] > .5]
+    promt = fstr(f'[{player.name}:{player.state}] > ', 'b', col)
     return promt
 
 # CONST
@@ -95,30 +92,30 @@ _PATH = argv[-1]
 if "-m" in argv: Sound.mute = True
 
 # INIT
-back.loadData(_PATH)
-musicMain = Sound(_PATH + 'main.wav')
-musicTown = Sound(_PATH + 'town.wav')
-musicDung = Sound(_PATH + 'dung.wav')
-musicEnds = Sound(_PATH + 'ends.wav')
+back.World(_PATH)
+musicMain = Sound(back.world.path + 'main.wav')
+musicTown = Sound(back.world.path + 'town.wav')
+musicDung = Sound(back.world.path + 'dung.wav')
+musicEnds = Sound(back.world.path + 'ends.wav')
 musicMain.play()
 
 # BUILD PLAYER
 name = input(fstr("name: ", 'b'))
 player = back.logIn(name)
-if not player:
-    if len(back.CLASS) > 1:
-        clas = parse_cmd((tuple(back.CLASS)), fstr("mode: ", 'b'), fstr("invalid mode!", 'n', 'red'))
-    else: clas = tuple(back.CLASS)
-    if not clas: clas = [None]
-    player = back.Player(name, clas[0])
+if not player: # NOT SIGN
+    if len(world.starts) > 1:
+        clas = parse_cmd(back.world.starts, fstr("mode: ", 'b'), fstr("invalid mode!", 'n', 'red'))
+    else: clas = ''
+    if not clas: clas = choice(tuple(back.world.starts))
+    player = back.Player(name, clas)
 
-if type(player.zone) == back.Town: musicTown.play()
-if type(player.zone) == back.Dung: musicDung.play()
-dtxt(f'"{back.META["start"]}"', _LIMITX, _TWAIT, 2)
+if back.world.zones[player.zone].type == "town": musicTown.play()
+if back.world.zones[player.zone].type == "dung": musicDung.play()
+dtxt(f'"{back.world.intro}"', _LIMITX, _TWAIT, 2)
 
 # MAIN LOOP
-while player.hp:
-    cmd = parse_cmd(("mov", "chg", "rol", 'q'), make_promt(player))
+while player:
+    cmd = parse_cmd(("mov", "chg", 'q'), make_promt(player))
 
     #try:
     if not cmd:

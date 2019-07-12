@@ -3,30 +3,30 @@
         {
             "name":"tant",
             "type":"town",
-            "level":0,
+            "info":"",
             "description":"castle that reigns over alefgard",
-            "shop":["sword","gold"]
+            "content":["sword","gold"]
         },
         {
             "name":"rimu",
             "type":"town",
-            "level":1,
+            "info":"ok",
             "description":"small town nearest of a cave",
-            "shop":["sword","wand"]
+            "content":["sword","wand"]
         },
         {
             "name":"cave",
             "type":"dung",
-            "level":2,
+            "info":2,
             "description":"cave with monsters & treasures",
-            "events":["slime","chest"]
+            "content":["slime","chest"]
         },
         {
             "name":"char",
             "type":"dung",
-            "level":4,
+            "info":4,
             "description":"the dragonlord's castle...",
-            "events":["slime","dragon"]
+            "content":["slime","dragon"]
         }
     ],
     "items": [
@@ -55,14 +55,18 @@
         }
     ],
     "goals": [
-        
+        {
+            "name":"overcome dragons",
+            "condition":"win dragon"
+        }        
     ],
-    "start": {
-        "zone":"tant",
-        "hp":3,
-        "bag":6,
-        "items":["sword","sword","gold"]
-    },
+    "start": [
+        {
+            "name":"hero",
+            "zone":"tant",
+            "items":["sword","sword","gold"]
+        }
+    ],
     "taxes": "gold",
     "intro": "dragonlord esta desolando las tierras de alefgard. descendiente de loto, libera el pantano y derrota a los dragones de la fortaleza",
     "outro": "la paz a regresado a nuestras tierras, desde ahora tu nombre se convertira en leyenda"
