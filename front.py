@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from time import sleep
 from sys import argv
 from util import *
@@ -78,8 +80,11 @@ def show_advc():
             advice = f'{evs} in {obj.name}'
         if type(obj) == back.Town: advice = f'{",".join(obj.shop)} in {obj.name}'
     if typ == "event":
-        win = ("reward items","hurt hp","nothing","it moves you")["IHNZ".index(obj.ifWin[0])]
-        lose = ("reward items","hurt hp","nothing","it moves you")["IHNZ".index(obj.ifLose[0])]
+        aux = {"give":"reward items","hit":"hurt hp","nothing":"nothing","move":"it moves you"}
+        win = obj.ifWin.split()[0]
+        lose = obj.ifLose.split()[0]
+        win = aux[win]
+        lose = aux[lose]
         advice = f'{obj.name} + {obj.weak} = {win}, else {lose}'
     print(fstr(f'* hint: {advice}', 'i', 'cyan'))
 def make_promt(player):

@@ -92,20 +92,28 @@ class Event:
         if end:
             if self.weak: player.items.remove(self.weak)
             player.winEvent[self.name] += 1
-        code = (self.ifLose, self.ifWin)[end]
-
-        # H<N>: GOLPEA AL JUGADOR <N> VECES
-        if code[0] == 'H': player.hit(int(code[1:]))
-        # I<N>: ENTREGA <N> ITEMS ALEATORIOS
-        if code[0] == 'I': player.add(*[random.choice(ITEMS) for i in range(int(code[1:]))])
-        # T<Z>: TELEPORTAR A ZONA <Z>
-        if code[0] == 'Z':
-            player.movZone[player.zone.name] -= 1
-            player.zone = zoneByName(code[1:])
-        # N: NO PASA NADA
-        if code[0] == 'N': pass
+        code = (self.ifLose, self.ifWin)[end].split()
+        if code[0] == 'hit': self.hit(player=player, hits=int(code[1]))
+        if code[0] == 'give': self.give(player=player, mount=int(code[1]))
+        if code[0] == 'move': self.move(player=player, zone=code[1])
+        if code[0] == 'nothing': pass
         
         return end
+    
+    def hit(self, **kwargs):
+        p = kwargs['player']
+        h = kwargs['hits']
+        p.hit(h)
+    def move(self, **kwargs):
+        p = kwargs['player']
+        z = kwargs['zone']
+        p.movZone[p.zone.name] -= 1
+        p.zone = zoneByName(z)
+    def give(self, **kwargs):
+        p = kwargs['player']
+        m = kwargs['mount']
+        p.add(*[random.choice(ITEMS) for i in range(m)])
+
 class Goal:
     def __init__(self, name, cond, *args):
         self.name = name
