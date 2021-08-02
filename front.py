@@ -80,9 +80,9 @@ def show_advc():
             advice = f'{evs} in {obj.name}'
         if type(obj) == back.Town: advice = f'{",".join(obj.shop)} in {obj.name}'
     if typ == "event":
-        aux = {"give":"reward items","hit":"hurt hp","nothing":"nothing","move":"it moves you"}
-        win = obj.ifWin.split()[0]
-        lose = obj.ifLose.split()[0]
+        aux = {"I":"reward items","H":"hurt hp","N":"nothing","Z":"it moves you"}
+        win = obj.ifWin.split()[0][0]
+        lose = obj.ifLose.split()[0][0]
         win = aux[win]
         lose = aux[lose]
         advice = f'{obj.name} + {obj.weak} = {win}, else {lose}'
