@@ -1,0 +1,19 @@
+item;sword
+item;gold
+item;mirror
+
+event;slime;sword;nothing;hit 1
+event;chest;;give 2;nothing
+event;well;mirror;give 1;hit 2
+
+zone;town;reid;0;home reign;sword,gold
+zone;town;zeni;1;castle in the sky;mirror,sword
+zone;dung;cave;2;dark cave...;slime,chest
+zone;dung;mudo;4;evil castle...;slime,well
+
+goal;clean wells;W3;well
+
+class;hero;5;2;mirror,gold
+class;drag;5;3;sword,sword
+
+meta;reid;gold;los suenos y la realidad estan en peligro, limpia los pozos magicos;gracias a ti el mundo brillara de ahora en adelante con la guia del rey dragon

@@ -16,6 +16,33 @@ class Sound:
             except:
                 print(fstr("not music available",'ic','red'))
 
+class Fighter:
+    @classmethod
+    def load(cls, nf):
+        # atk, def, spd, family, anim
+        cls.register = dict()
+        with open(nf) as f:
+            for line in f:
+                if line[0] == '#': continue
+                if line[:6] == "_weaks":
+                    cls.weaks = tuple(line.split(',')[1:])
+                    continue
+                name,a,d,s,fam,ani = line.strip().split(',')
+                cls.register[name] = (int(a), int(d), int(s), fam, ani)
+    
+    def __init__(self, spec, name=''):
+        self.spec = spec
+        self.name = spec[:4] if not name else name
+        if spec in Fighter.register:
+            self.at,self.df,self.sp,self.family,self.anim = Fighter.register[spec]
+        else:
+            self.at,self.df,self.sp,self.family,self.anim = 0,0,0,'',''
+    def show(self, fr=.3):
+        for s in self.anim:
+            print(s, end='',flush=1)
+            sleep(fr)
+            print('\033[D',end='')
+
 def fstr(src,att='n',font='default',back='default',end=True):
 	F = {'n':'0','b':'1','s':'2','i':'3','u':'4','r':'7','h':'8','c':'9'}
 	C = {'black':30,'red':31,'green':32,'yellow':33,'blue':34,'magenta':35,
