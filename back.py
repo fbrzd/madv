@@ -92,11 +92,11 @@ class Event:
         if end:
             if self.weak: player.items.remove(self.weak)
             player.winEvent[self.name] += 1
-        code = (self.ifLose, self.ifWin)[end].split()
-        if code[0] == 'hit': self.hit(player=player, hits=int(code[1]))
-        if code[0] == 'give': self.give(player=player, mount=int(code[1]))
-        if code[0] == 'move': self.move(player=player, zone=code[1])
-        if code[0] == 'nothing': pass
+        code = (self.ifLose, self.ifWin)[end]
+        if code[0] == 'H': self.hit(player=player, hits=int(code[1]))
+        if code[0] == 'I': self.give(player=player, mount=int(code[1]))
+        if code[0] == 'M': self.move(player=player, zone=code[1:])
+        if code[0] == 'N': pass
         
         return end
     
